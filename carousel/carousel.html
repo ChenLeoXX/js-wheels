@@ -138,6 +138,7 @@
   function Carousel($options) {
     this.innit($options)
     this.bind()
+    this.autoPlay()
   }
   Carousel.prototype = {
     innit: function ($options) {
@@ -150,6 +151,7 @@
       this.imgCount = this.$imgs.length
       this.$imgCt.css('left', -this.imgWidth)
       this.index = 0
+      this.isAnimate = false
 
       this.$imgCt.append(this.$imgs.first().clone())
       this.$imgCt.prepend(this.$imgs.last().clone())
@@ -179,6 +181,8 @@
     },
     playNext: function (len) {
       let _this = this
+      if(this.isAnimate) return
+      this.isAnimate = true
       this.$imgCt.animate({
         left: '-=' + _this.imgWidth * len
       }, function () {
@@ -187,11 +191,14 @@
           _this.$imgCt.css('left', -_this.imgWidth)
           _this.index = 0
         }
+        _this.isAnimate = false
         _this.setBtns()
       })
     },
     playPrev: function (len) {
       let _this = this
+      if(this.isAnimate) return
+      this.isAnimate = true
       this.$imgCt.animate({
         left: '+=' + _this.imgWidth *len
       }, function () {
@@ -200,6 +207,7 @@
           _this.$imgCt.css('left', -_this.imgCount * _this.imgWidth)
           _this.index = _this.imgCount - 1
         }
+        _this.isAnimate = false
         _this.setBtns()
       })
     },
@@ -207,9 +215,17 @@
       let _this =this
       this.$btns.eq(_this.index).addClass('active').siblings().removeClass('active')
       console.log('1')
+    },
+    autoPlay: function(){
+      let _this = this
+      var clock = setInterval(function(){
+        _this.playNext(1)
+      },3000)
+    },
+    stopPlay: function(){
+      clearInterval(clock)
     }
   }
-
   var carousel = new Carousel($('.carousel').eq(0))
 </script>
 

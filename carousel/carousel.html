@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="轮播" />
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_464766_l7nqxv8ghnhcwhfr.css">
+  <title>无限轮播</title>
+  <style>
+    /* reset css */
+
+    a {
+      text-decoration: none;
+    }
+
+    ul,
+    li {
+      list-style: none;
+      padding: 0;
+    }
+    /* common css */
+
+    .carousel {
+      position: relative;
+      width: 400px;
+      height: 250px;
+      overflow: hidden;
+      margin: 50px auto;
+    }
+
+    .img-ct {
+      font-size: 0;
+      position: absolute;
+    }
+
+    .img-ct a {
+      display: inline-block;
+    }
+
+    .clearfix:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    .img-ct img {
+      float: left;
+      width: 400px;
+      height: 250px;
+    }
+
+    .control span {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      border: 1px solid white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      margin-top: -15px;
+      color: white;
+      text-align: center;
+      line-height: 30px;
+    }
+
+    .prev {
+      left: 2%;
+    }
+
+    .next {
+      right: 2%;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 85%;
+      left: 49%;
+      transform: translate(-50%, -50%);
+    }
+
+    .carousel-nav li {
+      float: left;
+      height: 10px;
+      width: 25px;
+      border-radius: 5px;
+      border: 1px solid white;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .active {
+      background: rgba(255,255,255,.8)
+    }
+  </style>
+</head>
+
+<body>
+  <div class="carousel">
+    <div class="control">
+      <span class="prev">
+        <i class="iconfont icon-prev"></i>
+      </span>
+      <span class="next">
+        <i class="iconfont icon-next"></i>
+      </span>
+    </div>
+    <div class="img-ct clearfix">
+      <a href="#">
+        <img src="imgs/1.png" alt="">
+      </a>
+      <a href="#">
+        <img src="imgs/2.png" alt="">
+      </a>
+      <a href="#">
+        <img src="imgs/3.png" alt="">
+      </a>
+      <a href="#">
+        <img src="imgs/4.png" alt="">
+      </a>
+      <a href="#">
+        <img src="imgs/5.png" alt="">
+      </a>
+    </div>
+    <ul class="carousel-nav clearfix">
+      <li class="active"></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+</body>
+<script>
+  function Carousel($options) {
+    this.innit($options)
+    this.bind()
+  }
+  Carousel.prototype = {
+    innit: function ($options) {
+      this.$imgCt = $options.find('.img-ct')
+      this.$imgs = this.$imgCt.find('a')
+      this.$prev = $options.find('.control .prev')
+      this.$next = $options.find('.control .next')
+      this.$btns = $options.find('.carousel-nav li')
+      this.imgWidth = this.$imgs.width()
+      this.imgCount = this.$imgs.length
+      this.$imgCt.css('left', -this.imgWidth)
+      this.index = 0
+
+      this.$imgCt.append(this.$imgs.first().clone())
+      this.$imgCt.prepend(this.$imgs.last().clone())
+      this.$imgCt.width((this.imgCount + 2) * this.imgWidth)
+
+    },
+    bind: function () {
+      let _this = this
+      this.$prev.on('click', function () {
+        _this.playPrev(1)
+        console.log('prev')
+      })
+      this.$next.on('click', function () {
+        console.log('next')
+        _this.playNext(1)   
+      })
+      this.$btns.on('click', function () {
+       let index = $(this).index()
+        $(this).addClass('active').siblings().removeClass('active')
+        console.log(index)
+        if(index > _this.index){
+          _this.playNext(index - _this.index)
+        }else {
+          _this.playPrev(_this.index - index)
+        }
+      })
+    },
+    playNext: function (len) {
+      let _this = this
+      this.$imgCt.animate({
+        left: '-=' + _this.imgWidth * len
+      }, function () {
+        _this.index += len
+        if (_this.index === _this.imgCount) {
+          _this.$imgCt.css('left', -_this.imgWidth)
+          _this.index = 0
+        }
+        _this.setBtns()
+      })
+    },
+    playPrev: function (len) {
+      let _this = this
+      this.$imgCt.animate({
+        left: '+=' + _this.imgWidth *len
+      }, function () {
+        _this.index -= len
+        if (_this.index < 0) {
+          _this.$imgCt.css('left', -_this.imgCount * _this.imgWidth)
+          _this.index = _this.imgCount - 1
+        }
+        _this.setBtns()
+      })
+    },
+    setBtns: function(){
+      let _this =this
+      this.$btns.eq(_this.index).addClass('active').siblings().removeClass('active')
+      console.log('1')
+    }
+  }
+
+  var carousel = new Carousel($('.carousel').eq(0))
+</script>
+
+</html>

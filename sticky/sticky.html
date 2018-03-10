@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <title>Sticky-components</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 1500px;
+            background: #d9d9d9;
+        }
+
+        .topbar {
+            width: 100%;
+            background: lightblue;
+            height: 80px;
+            color: #fff;
+            text-align: center;
+            opacity: .5;
+            font-size:50px;
+        }
+        
+        p{
+            margin:5px;
+        }
+        button {
+            width: 100px;
+        }
+
+        /* .sticky只切换状态,其余宽高需要自行设置,例如导航条需要width:100%,其他元素同理 */
+
+        .sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="topbar">
+        Sticky-Topbar
+    </nav>
+    <p>段落 1</p>
+    <p>段落 2</p>
+    <p>段落 3</p>
+    <p>段落 4</p>
+    <p>段落 5</p>
+    <p>段落 6</p>
+    <p>段落 7</p>
+    <p>段落 8</p>
+    <p>段落 9</p>
+    <div class="test">
+        <button>被粘住的按钮</button>
+        <button>被黏住的按钮2</button>
+    </div>
+    <p>段落 10</p>
+    <script>
+        class Sticky {
+            constructor(el, val) {
+                this.$el = $(el)
+                this.offsetVal = val || 0
+                this.cacheOffset()
+                this.getWrapper()
+                this.bindEvent()
+            }
+            cacheOffset() { //缓存元素位置信息
+                this.offsets = []
+                this.$el.each((index, el) => {
+                    this.offsets[index] = $(el).offset()
+                })
+            }
+            bindEvent() {//绑定滚动事件
+                $(window).on('scroll', () => {
+                    let scrollY = window.scrollY
+                    this.$el.each((index, el) => {
+                        let $el = $(el)
+                        if (scrollY + this.offsetVal > this.offsets[index].top) {//设置触发条件
+                            $el.addClass('sticky').css({
+                                top: this.offsetVal
+                            })
+                        } else {
+                            $el.removeClass('sticky')
+                        }
+                    })
+                })
+            }
+            getWrapper() {
+                this.$el.each((index, el) => { //设置placeholder
+                    let $el = $(el)
+                    $el.wrap('<div class="placeHolder"></div>')
+                    $el.parent('.placeHolder').height($el.outerHeight(false))
+                })
+            }
+        }
+        new Sticky('.topbar')
+        new Sticky('.test', 80)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  <title>Tabs</title>
+  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+	<style>
+*{
+   padding:0;
+   margin:0;
+   box-sizing:border-box;
+}
+body{
+   background:#fff;
+}
+a{
+   text-decoration:none;
+}
+a:active{
+   color:black;
+}
+ol,li{
+   list-style:none;
+}
+
+.nav{
+
+   border-bottom:1px solid gray;
+}
+.nav {
+   display:flex;
+   justify-content:flex-start;
+
+}
+.nav >li{
+   margin-bottom:-1px;
+   
+}
+.a-border{
+ border:1px solid transparent;
+ padding:8px 16px;
+ display:block;
+}
+.nav li a:hover{
+  border-top: 1px solid gray;
+  border-left:1px solid gray;
+  border-right:1px solid gray;
+  border-bottom: 1px solid white;
+  border-top-left-radius:3px;
+  border-top-right-radius:3px;
+   box-shadow:-1px 0px 5px rgba(0,0,0,.2);
+}
+.content{
+   padding:16px;
+   border-bottom:1px solid gray;
+   border-left:1px solid gray;
+   border-right:1px solid gray;
+   min-height:200px;
+   box-shadow:0px 5px 10px rgba(0,0,0,.2);
+}
+.tabs{
+   margin:50px;
+}
+.nav-active{
+  border-top: 1px solid gray;
+  border-left:1px solid gray;
+  border-right:1px solid gray;
+  border-bottom: 1px solid white;
+  border-top-left-radius:3px;
+  border-top-right-radius:3px;
+  box-shadow:-1px 0px 5px rgba(0,0,0,.2);
+}
+.content li{
+   display:none;
+}
+.content li.content-active{
+   display:block
+}
+	</style>
+</head>
+<body>
+ <div class="tabs">
+      <ol class="nav">
+      <li><a href="#">Nav 1</a></li>
+      <li><a href="#">Nav 2</a></li>
+      <li><a href="#">Nav 3</a></li>
+    </ol>
+     <ol class="content">
+       <li>Content 1</li>
+       <li>Content 2</li>
+       <li>Content 3</li>
+     </ol>
+  </div>
+	
+<script>
+// //  ES5 Style
+// function Tabs(el) {
+//    this.$el = $(el)
+//    this.init()
+//    this.bindEvent()
+// }
+// Tabs.prototype.bindEvent = function() {
+//    this.$el.on('click', '.nav>li>a', function(e) {
+//       var $a = $(e.currentTarget)
+//       var index = $a.parent().index()
+//       $a.addClass('nav-active').parent().siblings().children('a').
+//       each(function(index, item) {
+//          $(item).removeClass('nav-active')
+//       })
+//       $('.nav').parent().find('.content>li').eq(index).addClass('content-active').siblings().removeClass('content-active')
+//    })
+// }
+// Tabs.prototype.init = function() {
+//    this.$el.each(function(index, el) {
+//       $(el).children().eq(0).find('a').addClass('a-border')
+//       $(el).children().eq(0).find('a').eq(0).addClass('nav-active')
+//       $(el).children().eq(1).find('li').eq(0).addClass('content-active')
+//    })
+// }
+// ES6 Style
+class Tabs {
+   constructor(el) {
+      this.$el = $(el)
+      this.init()
+      this.bindEvent()
+   }
+   init() {
+      this.$el.each(function(index, el) {
+         $(el).children().eq(0).find('a').addClass('a-border')
+         $(el).children().eq(0).find('a').eq(0).addClass('nav-active')
+         $(el).children().eq(1).find('li').eq(0).addClass('content-active')
+      })
+   }
+   bindEvent() {
+      this.$el.on('click', '.nav>li>a', function(e) {
+         var $a = $(e.currentTarget)
+         var index = $a.parent().index()
+         $a.addClass('nav-active').parent().siblings().children('a').
+         each(function(index, item) {
+            $(item).removeClass('nav-active')
+         })
+         $('.nav').parent().find('.content>li').eq(index).addClass('content-active').siblings().removeClass('content-active')
+      })
+   }
+}
+var tabs = new Tabs('.tabs')
+</script>
+</body>
+</html>

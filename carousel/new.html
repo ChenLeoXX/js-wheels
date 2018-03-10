@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>简书轮播</title>
+  <script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_464766_l7nqxv8ghnhcwhfr.css">
+  <style>
+    /* reset css */
+
+    ul,
+    li {
+      list-style: none;
+      padding: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+    /* common css */
+    .clearfix::after {
+      content:'';
+      display: block;
+      clear: both;
+    }
+    .carousel {
+      position: relative;
+      margin: 50px auto;
+      max-width: 1040px;
+      height: 299px;
+    }
+    .fade img {
+      width: 695px; 
+      position: absolute;
+    }
+    .fade{
+      position: relative;
+      width: 695px;
+      /* height:300px; */
+    }
+    .roll {
+        float: right;
+        height:900px;
+    }
+    .roll img {
+      height:150px;
+      width:345px;
+      display:  block;
+    }
+    .control a {
+      position: absolute;
+      z-index: 7;
+      color:white;
+      height:55px;
+      width:45px;
+      background: rgba(0,0,0,.5);
+      text-align: center;
+      line-height: 55px;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      top: 50%;
+      margin-top: -22.5px;
+      visibility: hidden;
+      cursor: pointer;
+    }
+    .control i {
+      font-size: 30px;
+    }
+    .next {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    right:0;
+    }
+    .carousel:hover>.control a {
+     visibility: visible;
+    }
+    .window {
+      height:300px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="carousel clearfix">
+    <div class="control">
+      <a class="prev"><i class="iconfont icon-prev"></i></a>
+      <a class="next"><i class="iconfont icon-next"></i></a>
+    </div>
+    <div class="fade">
+      <a href=""><img src="imgs/1.png" alt="" style="z-index:6;"></a>
+      <a href=""><img src="imgs/2.png" alt="" style="z-index:5;"></a>
+      <a href=""><img src="imgs/3.png" alt="" style="z-index:4;"></a>
+      <a href=""><img src="imgs/4.png" alt="" style="z-index:3;"></a>
+      <a href=""><img src="imgs/5.png" alt="" style="z-index:2;"></a>
+      <a href=""><img src="imgs/6.png" alt="" style="z-index:1;"></a>
+    </div>
+    <div class="window">
+        <div class="roll">
+            <a href=""><img src="imgs/2.png" alt=""></a>
+            <a href=""><img src="imgs/3.png" alt=""></a>
+            <a href=""><img src="imgs/4.png" alt=""></a>
+            <a href=""><img src="imgs/5.png" alt=""></a>
+            <a href=""><img src="imgs/6.png" alt=""></a>
+            <a href=""><img src="imgs/1.png" alt=""></a>
+        </div>
+    </div>
+  </div>
+</body>
+<script>
+  function Carousel($ct){
+   this.innit($ct)
+   this.bind()
+  }
+  Carousel.prototype= {
+    innit: function($ct){
+       this.$ct = $ct
+       this.$show = $ct.find('.fade')
+       this.$roll = $ct.find('.roll')
+       this.$prev = $ct.find('.control .prev')
+       this.$next = $ct.find('.control .next')
+       this.$roll.prepend()
+    },
+    bind: function (){
+
+    }
+  }
+  var carousel = new Carousel($(".carousel").eq(0))
+</script>
+</html>

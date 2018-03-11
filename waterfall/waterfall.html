@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <title>瀑布流布局</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+        }
+
+        .waterfall {
+            margin: 50px auto;
+        }
+
+        .waterfall-container {
+            position: relative;
+        }
+
+        .waterfall-img {
+            position: absolute;
+            margin: 10px;
+            transition: all 0.4s
+        }
+    </style>
+</head>
+
+<body>
+    <div class="waterfall">
+        <img src="http://via.placeholder.com/150x100" alt="100*100" alt="">
+        <img src="http://via.placeholder.com/150x150" alt="300*100" alt="">
+        <img src="http://via.placeholder.com/150x200" alt="300*100" alt="">
+        <img src="http://via.placeholder.com/150x250" alt="">
+        <img src="http://via.placeholder.com/150x180" alt="">
+        <img src="http://via.placeholder.com/150x220" alt="">
+        <img src="http://via.placeholder.com/150x250" alt="">
+        <img src="http://via.placeholder.com/150x100" alt="">
+        <img src="http://via.placeholder.com/150x90" alt="">
+        <img src="http://via.placeholder.com/150x130" alt="">
+        <img src="http://via.placeholder.com/150x230" alt="">
+        <img src="http://via.placeholder.com/150x190" alt="">
+        <img src="http://via.placeholder.com/150x50" alt="">
+        <img src="http://via.placeholder.com/150x290" alt="">
+        <img src="http://via.placeholder.com/150x220" alt="">
+        <img src="http://via.placeholder.com/150x100" alt="">
+        <img src="http://via.placeholder.com/150x200" alt="">
+        <img src="http://via.placeholder.com/150x100" alt="">
+        <img src="http://via.placeholder.com/150x160" alt="">
+        <img src="http://via.placeholder.com/150x50" alt="">
+    </div>
+    <script>
+        class Waterfall {
+            constructor(container) {
+                this.$container = $(container)
+                this.imgs = this.$container.children()
+                this.init()
+                this.waterfall()
+                this.onWindowResize()
+            }
+            init() {
+                this.imgs.each(function (index, el) {
+                    $(el).addClass('waterfall-img')
+                })
+                this.$container.addClass('waterfall-container')
+                this.imgHeightArr = []
+                this.waterfall_col = Math.floor(this.$container.width() / this.imgs.outerWidth(true)) //根据父元素计算列数
+                for (let i = 0; i < this.waterfall_col; i++) {
+                    this.imgHeightArr[i] = 0 //初始化列高为零
+                }
+            }
+            waterfall() {
+                this.imgs.on('load', (e) => { //图片加载完成布局
+                    let minHeight = this.imgHeightArr[0]
+                    let minHeightIndex = 0
+                    for (let i = 0; i < this.waterfall_col; i++) {
+                        if (this.imgHeightArr[i] < minHeight) { //找出全部列里高度最小的一列
+                            minHeight = this.imgHeightArr[i]
+                            minHeightIndex = i
+                        }
+                        $(e.currentTarget).css({
+                            left: minHeightIndex * this.imgs.outerWidth(true),
+                            top: minHeight
+                        })
+                    }
+                    this.imgHeightArr[minHeightIndex] += $(e.currentTarget).outerHeight(true)
+                })
+            }
+            resizeWaterfall() { //窗口变化重新布局
+                this.imgs.each((index, el) => {
+                    let minHeight = this.imgHeightArr[0]
+                    let minHeightIndex = 0
+                    for (let i = 0; i < this.waterfall_col; i++) {
+                        if (this.imgHeightArr[i] < minHeight) { //找出全部列里高度最小的一列
+                            minHeight = this.imgHeightArr[i]
+                            minHeightIndex = i
+                        }
+                        $(el).css({
+                            left: minHeightIndex * this.imgs.outerWidth(true),
+                            top: minHeight
+                        })
+                    }
+                    this.imgHeightArr[minHeightIndex] += $(el).outerHeight(true)
+                })
+            }
+            onWindowResize() {
+                $(window).on('resize', () => {
+                    this.init()
+                    this.resizeWaterfall()
+                })
+            }
+        }
+        new Waterfall('.waterfall') //父元素css自行定义,JS只添加一个relative类
+    </script>
+</body>
+
+</html>

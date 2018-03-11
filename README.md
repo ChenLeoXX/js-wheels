@@ -8,7 +8,8 @@
 - 分层原则：正交原则
 - 封装原则：面向接口编程
 ### 常用的组件
+- [瀑布流布局](https://chenleoxx.github.io/js-wheels/waterfall/waterfall.html)
 - [轮播](https://chenleoxx.github.io/js-wheels/carousel/carousel.html)
+- [懒加载](https://chenleoxx.github.io/js-wheels/lazyload/lazyload.html)
 - [sticky](https://chenleoxx.github.io/js-wheels/sticky/sticky.html)
 - [Tabs](https://chenleoxx.github.io/js-wheels/Tabs/Tabs.html)
-- [瀑布流布局](https://chenleoxx.github.io/js-wheels/waterfall/waterfall.html)

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <title>懒加载</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container img {
+            width: 250px;
+            float: left;
+        }
+
+        .clearfix::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container clearfix">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif 
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/5.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/6.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/7.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/8.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/9.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/10.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/11.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/12.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/13.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/14.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/15.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/16.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/17.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/18.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/19.jpg">
+        <img src="https://i.loli.net/2018/03/11/5aa5210fb373b.gif
+          " alt="" data-src="http://cdn.jirengu.com/book.jirengu.com/img/20.jpg">
+    </div>
+    <script>
+        class lazyLoad {
+            constructor(container) {
+                this.$imgs = $(container).children()
+                this.firstLoad()
+                this.lazyLoad()
+            }
+            isShow(el) {
+                if ($(el).offset().top < $(window).height() + $(window).scrollTop()) {//判断元素页面位置
+                    return true
+                }
+            }
+            loadImg(el) {
+                $(el).attr('src', $(el).attr('data-src'))
+                $(el).attr('hasLoad', true)
+            }
+            checkout(el) {
+                if ($(el).attr('hasLoad') !== 'true') return true
+            }
+            firstLoad() {
+                this.$imgs.each((index, el) => {
+                    if (this.isShow(el) && this.checkout(el)) {
+                        // settimeout 演示网络延迟效果实际不应该加上
+                        setTimeout(()=>{
+                            this.loadImg(el)
+                        },300)
+                    }
+                })
+            }
+            lazyLoad() {
+                $(window).on('scroll', () => {
+                    this.firstLoad()
+                })
+            }
+        }
+        new lazyLoad('.container')
+    </script>
+</body>
+
+</html>

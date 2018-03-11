@@ -8,6 +8,24 @@
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <title>懒加载</title>
     <style>
+        .gotop {
+            width: 80px;
+            height: 50px;
+            outline: none;
+            color: #fff;
+            border: none;
+            background: lightblue;
+            border-radius: 5px;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 35px;
+        }
+
+        .active {
+            display: none;
+        }
+
         .container {
             max-width: 600px;
             margin: 0 auto;
@@ -77,7 +95,7 @@
                 this.lazyLoad()
             }
             isShow(el) {
-                if ($(el).offset().top < $(window).height() + $(window).scrollTop()) {//判断元素页面位置
+                if ($(el).offset().top < $(window).height() + $(window).scrollTop()) { //判断元素页面位置
                     return true
                 }
             }
@@ -92,9 +110,9 @@
                 this.$imgs.each((index, el) => {
                     if (this.isShow(el) && this.checkout(el)) {
                         // settimeout 演示网络延迟效果实际不应该加上
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             this.loadImg(el)
-                        },300)
+                        }, 300)
                     }
                 })
             }
@@ -105,6 +123,35 @@
             }
         }
         new lazyLoad('.container')
+
+        // 返回顶部
+
+        class Gotop {
+            constructor(val) {
+                this.val = val
+                this.init()
+                this.bindEvent()
+            }
+            init() {
+                this.temp = document.createElement('button')
+                this.temp.classList.add('gotop', 'active')
+                this.temp.innerText = '返回顶部'
+                this.temp.addEventListener('click', () => {
+                    window.scroll(0, 0)
+                })
+                document.body.appendChild(this.temp)
+            }
+            bindEvent() {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > this.val) {
+                        this.temp.classList.remove('active')
+                    } else {
+                        this.temp.classList.add('active')
+                    }
+                }, false)
+            }
+        }
+        new Gotop(400)
     </script>
 </body>
 

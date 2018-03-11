@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>返回顶部</title>
+    <style>
+        h1 {
+            line-height: 3;
+        }
+
+        .gotop {
+            width: 80px;
+            height: 50px;
+            outline: none;
+            color: #fff;
+            border: none;
+            background: lightblue;
+            border-radius: 5px;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 35px;
+        }
+
+        .active {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <h1>大标题</h1>
+    <script>
+        class Gotop {
+            constructor(val) {
+                this.val = val
+                this.init()
+                this.bindEvent()
+            }
+            init() {
+                this.temp = document.createElement('button')
+                this.temp.classList.add('gotop', 'active')
+                this.temp.innerText = '返回顶部'
+                console.log(this.temp)
+                this.temp.addEventListener('click', () => {
+                    window.scroll(0, 0)
+                })
+                document.body.appendChild(this.temp)
+            }
+            bindEvent() {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > this.val) {
+                        this.temp.classList.remove('active')
+                    } else {
+                        this.temp.classList.add('active')
+                    }
+                }, false)
+            }
+        }
+        new Gotop(400)
+    </script>
+</body>
+
+</html>

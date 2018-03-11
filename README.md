@@ -13,3 +13,4 @@
 - [懒加载](https://chenleoxx.github.io/js-wheels/lazyload/lazyload.html)
 - [sticky](https://chenleoxx.github.io/js-wheels/sticky/sticky.html)
 - [Tabs](https://chenleoxx.github.io/js-wheels/Tabs/Tabs.html)
+- [GoTop](https://chenleoxx.github.io/js-wheels/gotop/gotop.html)
